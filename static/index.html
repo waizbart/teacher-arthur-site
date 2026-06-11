@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>HTML Server — Files</title>
+	<style>
+		* { box-sizing: border-box; margin: 0; padding: 0; }
+
+		body {
+			font-family: system-ui, sans-serif;
+			background: #f4f4f5;
+			color: #18181b;
+			line-height: 1.5;
+			padding: 2rem 1rem;
+		}
+
+		main {
+			max-width: 640px;
+			margin: 0 auto;
+			background: #fff;
+			border: 1px solid #e4e4e7;
+			border-radius: 8px;
+			padding: 2rem;
+		}
+
+		h1 {
+			font-size: 1.5rem;
+			margin-bottom: 0.25rem;
+		}
+
+		p {
+			color: #71717a;
+			margin-bottom: 1.5rem;
+		}
+
+		ul {
+			list-style: none;
+		}
+
+		li + li {
+			margin-top: 0.5rem;
+		}
+
+		a {
+			display: block;
+			padding: 0.75rem 1rem;
+			border: 1px solid #e4e4e7;
+			border-radius: 6px;
+			color: #18181b;
+			text-decoration: none;
+			transition: border-color 0.15s, background 0.15s;
+		}
+
+		a:hover {
+			border-color: #a1a1aa;
+			background: #fafafa;
+		}
+
+		.file-id {
+			font-weight: 600;
+		}
+
+		.file-path {
+			display: block;
+			font-size: 0.8rem;
+			color: #71717a;
+			margin-top: 0.15rem;
+			font-family: monospace;
+		}
+
+		footer {
+			max-width: 640px;
+			margin: 1rem auto 0;
+			text-align: center;
+			font-size: 0.8rem;
+			color: #a1a1aa;
+		}
+	</style>
+</head>
+<body>
+	<main>
+		<h1>File Directory</h1>
+		<p>Click a file to open it.</p>
+
+		<ul>
+            {% files_list %}
+			
+		</ul>
+	</main>
+
+	<footer>html-server</footer>
+</body>
+</html>

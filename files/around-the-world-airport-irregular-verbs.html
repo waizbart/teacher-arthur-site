@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Around the World — Airport English × Irregular Verbs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0b2447;--bg2:#123764;--card:#fff;--ink:#15293e;--muted:#647d96;--line:#dbe6f0;
+    --sky:#19a7ce;--sky-dk:#0f7fa0;--sun:#ffb703;--coral:#ff5d73;--mint:#2ec4a6;
+    --ok:#1fa45c;--ok-soft:#e4f6ec;--warn:#cf8a00;--warn-soft:#fdf3da;--lock:#9fb3c8;}
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:linear-gradient(180deg,var(--bg),var(--bg2) 60%,#0d2c52);color:var(--ink);
+    font-family:'Nunito',sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 16px 80px;}
+  h1,h2,h3,.bal{font-family:'Baloo 2',cursive;}
+
+  .tracker{position:sticky;top:0;z-index:50;background:#071a35;border-bottom:3px solid var(--sun);
+    padding:9px 14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;color:#fff;}
+  .tracker .brand{font-family:'Baloo 2';font-weight:800;font-size:1.1rem;color:var(--sun);}
+  .tracker .pill{font-size:.76rem;font-weight:700;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:3px 11px;}
+  .tracker .pill b{color:var(--sun);}
+  .bar{flex:1;min-width:120px;height:9px;background:rgba(255,255,255,.15);border-radius:6px;overflow:hidden;}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--coral),var(--sun));transition:width .5s;}
+
+  header{text-align:center;padding:32px 8px 8px;color:#fff;}
+  header .eyebrow{font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--sun);font-size:.78rem;}
+  header h1{font-size:clamp(2.2rem,7vw,3.6rem);margin:8px 0;line-height:1.04;
+    text-shadow:0 4px 0 rgba(0,0,0,.25);}
+  header p{color:#bcd2e8;max-width:600px;margin:0 auto;}
+
+  /* ROUTE MAP */
+  .route{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:16px 14px 8px;margin:18px 0;}
+  .stops{display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:8px;}
+  .stop{flex:1;min-width:74px;text-align:center;position:relative;cursor:pointer;}
+  .stop .dotwrap{position:relative;height:40px;display:flex;align-items:center;justify-content:center;}
+  .stop .dot{width:34px;height:34px;border-radius:50%;background:#0e2a4d;border:3px solid #2c4a73;display:flex;align-items:center;justify-content:center;font-size:1.05rem;transition:.15s;}
+  .stop.done .dot{background:var(--ok);border-color:#7fe0ab;}
+  .stop.cur .dot{background:var(--sun);border-color:#ffe29a;box-shadow:0 0 14px var(--sun);transform:scale(1.12);}
+  .stop.locked .dot{filter:grayscale(1);opacity:.55;}
+  .stop .nm{font-size:.68rem;font-weight:800;color:#bcd2e8;margin-top:3px;}
+  .stop.cur .nm{color:var(--sun);}
+  .stop.done .nm{color:#7fe0ab;}
+  .stop .lk{font-size:.6rem;color:var(--lock);}
+  .leg{position:absolute;top:19px;left:50%;width:100%;height:3px;background:#2c4a73;z-index:-1;}
+  .stop.done .leg{background:var(--ok);}
+  .stop:last-child .leg{display:none;}
+  .plane-ico{position:absolute;top:-14px;left:50%;transform:translateX(-50%);font-size:1.1rem;display:none;}
+  .stop.cur .plane-ico{display:block;animation:hover 1.6s ease-in-out infinite;}
+  @keyframes hover{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-4px);}}
+
+  .layout{display:flex;gap:20px;align-items:flex-start;}
+  .passport{flex:0 0 250px;position:sticky;top:62px;background:#7a1f2b;border-radius:14px;padding:14px;color:#f7e8d3;
+    border:2px solid #5d1620;box-shadow:0 8px 22px rgba(0,0,0,.35);}
+  .passport h3{font-family:'Special Elite';letter-spacing:2px;text-transform:uppercase;font-size:.9rem;margin:0 0 4px;color:#e8c87a;text-align:center;}
+  .passport .sub{font-size:.68rem;text-align:center;color:#d9b9a0;margin-bottom:10px;letter-spacing:1px;}
+  .stamps{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+  .stampbox{aspect-ratio:1.4;border:1.5px dashed rgba(247,232,211,.35);border-radius:8px;display:flex;align-items:center;justify-content:center;}
+  .stamp{font-family:'Special Elite';font-size:.6rem;text-align:center;line-height:1.25;color:#f7e8d3;
+    border:2px solid #f7e8d3;border-radius:6px;padding:4px 6px;transform:rotate(-8deg);opacity:.92;}
+  .stamp .fl{font-size:1rem;display:block;}
+  .main{flex:1;min-width:0;}
+  @media(max-width:840px){.layout{flex-direction:column;}.passport{position:static;width:100%;flex:none;}
+    .stamps{grid-template-columns:repeat(5,1fr);}}
+
+  .card{background:var(--card);border-radius:16px;padding:20px;margin-bottom:18px;box-shadow:0 10px 26px rgba(0,0,0,.25);}
+  .country-head{display:flex;align-items:center;gap:14px;border-bottom:2px dashed var(--line);padding-bottom:12px;margin-bottom:14px;}
+  .country-head .fl{font-size:2.6rem;}
+  .country-head h2{margin:0;font-size:1.5rem;color:var(--ink);}
+  .country-head .ty{font-size:.8rem;font-weight:800;color:#fff;background:var(--sky);border-radius:20px;padding:2px 12px;display:inline-block;}
+  .country-head .gate{margin-left:auto;font-family:'Special Elite';font-size:.78rem;color:var(--muted);text-align:right;}
+  .mission{background:#eef7fc;border-left:4px solid var(--sky);border-radius:0 10px 10px 0;padding:10px 14px;margin-bottom:14px;font-size:.95rem;}
+  .mission b{color:var(--sky-dk);}
+
+  .item{margin-bottom:14px;}
+  .item .q{font-weight:700;margin-bottom:6px;}
+  .item .q .qn{font-family:'Baloo 2';color:var(--sky-dk);margin-right:6px;}
+  .item .q .tag{display:inline-block;background:#fff3d6;color:#9a6d00;border-radius:6px;padding:0 8px;font-size:.8rem;margin-left:4px;}
+  .item input[type=text]{width:100%;font-family:'Nunito';font-weight:600;font-size:1rem;padding:10px 12px;border:2px solid var(--line);border-radius:9px;color:var(--ink);}
+  .item input:focus{outline:none;border-color:var(--sky);box-shadow:0 0 0 3px rgba(25,167,206,.15);}
+  .item input.ok{border-color:var(--ok);background:var(--ok-soft);}
+  .item input.no{border-color:var(--warn);background:var(--warn-soft);}
+  .fb{margin-top:5px;font-size:.88rem;font-weight:700;display:none;border-radius:8px;padding:6px 11px;}
+  .fb.ok{display:block;background:var(--ok-soft);color:var(--ok);}
+  .fb.no{display:block;background:var(--warn-soft);color:#8a6400;}
+  .fb .m{display:block;margin-top:2px;color:var(--ink);font-weight:600;}.fb .m b{color:var(--sky-dk);}
+
+  .dlg{background:#f6fafd;border:1px solid var(--line);border-radius:12px;padding:6px 14px;}
+  .dlg .ln{display:flex;gap:10px;margin:10px 0;align-items:flex-start;}
+  .dlg .who{flex:none;font-weight:800;font-size:.78rem;color:#fff;background:var(--coral);border-radius:14px;padding:2px 10px;margin-top:2px;}
+  .dlg .ln.you .who{background:var(--sky);}
+  .dlg .say{flex:1;line-height:2;}
+  .gap{font-family:'Nunito';font-weight:700;font-size:.94rem;text-align:center;padding:3px 5px;border:none;border-bottom:2.5px solid var(--sky);background:#e3f3fa;color:var(--sky-dk);border-radius:6px 6px 0 0;}
+  .gap:focus{outline:none;background:#d2ecf7;}
+  .gap.ok{background:var(--ok-soft);border-color:var(--ok);color:var(--ok);}
+  .gap.no{background:var(--warn-soft);border-color:var(--warn);color:#8a6400;}
+
+  .scramble{background:#f6fafd;border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin-bottom:6px;
+    font-family:'Special Elite';font-size:.95rem;color:#33506b;}
+  .announce{background:#15293e;color:#ffd76a;font-family:'Special Elite';border-radius:10px;padding:12px 16px;line-height:2.1;margin-bottom:8px;}
+  .announce .gap{background:#23405c;color:#ffd76a;border-color:var(--sun);}
+  .announce .gap.ok{background:#173a2a;color:#7fe0ab;border-color:var(--ok);}
+  .announce .gap.no{background:#3a2f14;color:#ffce63;border-color:var(--warn);}
+
+  .actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;}
+  .btn{font-family:'Baloo 2';font-weight:700;font-size:1rem;cursor:pointer;border:none;border-radius:10px;padding:10px 24px;color:#fff;background:var(--sky);box-shadow:0 4px 0 var(--sky-dk);}
+  .btn:active{transform:translateY(2px);box-shadow:0 2px 0 var(--sky-dk);}
+  .btn.ghost{background:#fff;color:var(--sky-dk);border:2px solid var(--line);box-shadow:none;}
+  .btn.board{background:var(--sun);color:#5b3c00;box-shadow:0 4px 0 #c78c00;font-size:1.15rem;}
+  .score{font-family:'Baloo 2';font-weight:700;font-size:1.1rem;color:var(--ok);display:none;}
+  .score.show{display:inline-block;}
+  .msg{display:none;margin-top:12px;font-weight:700;border-radius:9px;padding:10px 13px;}
+  .msg.ok{display:block;background:var(--ok-soft);color:var(--ok);}
+  .msg.no{display:block;background:var(--warn-soft);color:#8a6400;}
+
+  textarea{width:100%;min-height:190px;font-family:'Nunito';font-size:1.02rem;line-height:1.65;padding:14px;border:2px solid var(--line);border-radius:11px;color:var(--ink);resize:vertical;}
+  textarea:focus{outline:none;border-color:var(--sun);box-shadow:0 0 0 3px rgba(255,183,3,.2);}
+  .meters{display:flex;gap:12px;margin:12px 0;flex-wrap:wrap;}
+  .meter{flex:1;min-width:140px;background:#f6fafd;border:1px solid var(--line);border-radius:10px;padding:9px 13px;}
+  .meter .big{font-family:'Baloo 2';font-weight:800;font-size:1.6rem;color:var(--sky-dk);line-height:1;}
+  .meter .lab{font-size:.74rem;color:var(--muted);margin-top:2px;}
+  .meter.hit{background:var(--ok-soft);border-color:#9adbb6;}.meter.hit .big{color:var(--ok);}
+  .checklist{list-style:none;padding:0;margin:8px 0 0;}
+  .checklist li{display:flex;gap:10px;align-items:center;font-size:.9rem;color:var(--muted);margin-bottom:6px;}
+  .checklist .box{width:21px;height:21px;flex:none;border:1.5px solid var(--line);border-radius:6px;background:#fff;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Baloo 2';}
+  .checklist li.on{color:var(--ink);font-weight:700;}.checklist li.on .box{background:var(--ok);border-color:var(--ok);}
+  .modelbox{display:none;margin-top:14px;background:#fffbef;border:1px dashed #e3cf8d;border-radius:10px;padding:14px 16px;}
+  .modelbox.show{display:block;}
+  .modelbox h4{margin:0 0 6px;font-family:'Baloo 2';color:#9a6d00;font-size:.95rem;}
+  .modelbox p{margin:0;white-space:pre-line;line-height:1.65;}
+
+  #victory{display:none;text-align:center;background:linear-gradient(135deg,var(--sun),var(--coral));color:#3c1020;border-radius:18px;padding:28px;margin-bottom:18px;}
+  #victory h2{font-size:2.1rem;margin:0 0 4px;}
+  .foot{text-align:center;color:#bcd2e8;font-size:.82rem;margin-top:24px;}
+  .reset{background:none;border:none;color:var(--sun);text-decoration:underline;cursor:pointer;font:inherit;font-size:.82rem;}
+</style>
+</head>
+<body>
+<div class="tracker">
+  <span class="brand">✈ WORLD TOUR</span>
+  <span class="pill">Stops: <b id="tStops">0</b>/10</span>
+  <span class="pill" id="tNow">Now boarding: Brazil</span>
+  <div class="bar"><i id="bar"></i></div>
+</div>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">B1/B2 · Airport English × Irregular Verbs</div>
+    <h1>AROUND THE WORLD IN 10 STOPS</h1>
+    <p>Survive real airport situations in English — check-in, passport control, lost luggage, gate changes — while mastering irregular verbs. Complete each country to unlock the next flight. The final stop opens only with your travel-diary writing!</p>
+  </header>
+
+  <div class="route"><div class="stops" id="stops"></div></div>
+
+  <div class="layout">
+    <aside class="passport">
+      <h3>★ Passport ★</h3>
+      <div class="sub">WORLD TOUR · STUDENT EDITION</div>
+      <div class="stamps" id="stamps"></div>
+    </aside>
+    <div class="main">
+      <div id="victory"><h2>🌍 WORLD TOUR COMPLETE!</h2><p id="vtxt"></p></div>
+      <div id="main"></div>
+      <div class="foot">Restart the trip? <button class="reset" onclick="resetAll()">↻ New world tour</button></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const STOPS=[
+/* 1 BRAZIL — vocab definitions */
+{fl:"🇧🇷",name:"Brazil",city:"São Paulo · GRU",type:"Check-in Vocabulary",kind:"items",
+ mission:"Welcome to the airport! Before you fly, learn the survival words. <b>Type the airport term</b> for each definition.",
+ items:[
+  {q:"The document you show with your photo to travel to another country.",a:["passport"],m:"passport"},
+  {q:"The paper (or app) that shows your seat and gate. You need it to get on the plane.",a:["boarding pass","boarding card"],m:"boarding pass"},
+  {q:"The big bag you give to the airline at the counter.",a:["checked luggage","luggage","suitcase","checked baggage","baggage"],m:"(checked) luggage / suitcase"},
+  {q:"The small bag you take with you on the plane.",a:["carry-on","carry on","hand luggage","cabin bag","carry-on bag"],m:"carry-on / hand luggage"},
+  {q:"The place where you drop your bags and get your boarding pass.",a:["check-in","check in","check-in desk","check-in counter"],m:"check-in (desk)"},
+  {q:"The door area where you wait to get on your plane.",a:["gate","the gate","boarding gate"],m:"gate"}
+ ]},
+/* 2 USA — passport control dialogue cloze */
+{fl:"🇺🇸",name:"USA",city:"New York · JFK",type:"Passport Control Dialogue",kind:"dialogue",
+ mission:"Immigration time! Complete the conversation with the <b>past simple</b> of the verbs in brackets — answer like a confident traveller.",
+ lines:[
+  {who:"OFFICER",you:false,t:"Good morning. Where did you fly from?"},
+  {who:"YOU",you:true,t:"Good morning! I ((fly|flew)) from São Paulo. The plane ((leave|left)) at 10 PM."},
+  {who:"OFFICER",you:false,t:"What's the purpose of your trip?"},
+  {who:"YOU",you:true,t:"Tourism! I ((come|came)) to visit New York. I ((buy|bought)) my tickets two months ago."},
+  {who:"OFFICER",you:false,t:"How long will you stay? And where?"},
+  {who:"YOU",you:true,t:"Ten days. My friend ((find|found)) me a hotel near Times Square, and I ((bring|brought)) enough money for the trip."},
+  {who:"OFFICER",you:false,t:"Welcome to the United States. Enjoy your stay!"}
+ ]},
+/* 3 UK — riddles */
+{fl:"🇬🇧",name:"UK",city:"London · LHR",type:"Airport Riddles",kind:"items",
+ mission:"The Heathrow Riddle Master blocks your way! <b>Solve each riddle</b> — every answer is an airport word.",
+ items:[
+  {q:"I have a belt, but I wear no trousers. Your suitcase rides on me after the flight. What am I?",a:["baggage claim","carousel","baggage carousel","conveyor belt","luggage carousel"],m:"the baggage carousel (baggage claim)"},
+  {q:"I'm a 'free' shop, but nothing is free — you just don't pay taxes. What am I?",a:["duty-free","duty free","duty-free shop","duty free shop"],m:"the duty-free shop"},
+  {q:"People raise their arms and I see through their clothes... for safety, of course. What am I?",a:["security scanner","scanner","body scanner","metal detector","security"],m:"the security scanner"},
+  {q:"I'm not the pilot, but I welcome you, serve your food and show you the exits. Who am I?",a:["flight attendant","cabin crew","steward","stewardess","air hostess"],m:"a flight attendant"},
+  {q:"I'm a 'lay' and an 'over'. You wait inside me between two flights. What am I?",a:["layover","a layover","stopover","a stopover"],m:"a layover / stopover"}
+ ]},
+/* 4 FRANCE — unscramble */
+{fl:"🇫🇷",name:"France",city:"Paris · CDG",type:"Word Order Chaos",kind:"unscramble",
+ mission:"Oh non! The departure board mixed all the words. <b>Rewrite each sentence in the correct order</b> (keep the past simple!).",
+ items:[
+  {scr:"my / I / passport / at / showed / control / passport",a:["i showed my passport at passport control"],m:"I showed my passport at passport control."},
+  {scr:"gate / we / to / ran / the / because / late / were / we",a:["we ran to the gate because we were late"],m:"We ran to the gate because we were late."},
+  {scr:"took / she / window / a / seat / by / the",a:["she took a seat by the window"],m:"She took a seat by the window."},
+  {scr:"plane / the / off / took / time / on",a:["the plane took off on time"],m:"The plane took off on time."},
+  {scr:"slept / he / flight / during / whole / the",a:["he slept during the whole flight"],m:"He slept during the whole flight."}
+ ]},
+/* 5 JAPAN — error correction */
+{fl:"🇯🇵",name:"Japan",city:"Tokyo · NRT",type:"Fix the Travel Blog",kind:"items",
+ mission:"A tourist wrote a blog post, but every sentence has <b>one wrong verb</b>. Rewrite each sentence correctly.",
+ items:[
+  {q:"✗ \"Yesterday I taked an amazing flight to Tokyo.\"",a:["took"],req:["took"],forb:["taked"],m:"Yesterday I took an amazing flight to Tokyo."},
+  {q:"✗ \"The flight attendant gived me green tea.\"",a:["gave"],req:["gave"],forb:["gived"],m:"The flight attendant gave me green tea."},
+  {q:"✗ \"I eated sushi at the airport restaurant.\"",a:["ate"],req:["ate"],forb:["eated"],m:"I ate sushi at the airport restaurant."},
+  {q:"✗ \"We getted our luggage very quickly.\"",a:["got"],req:["got"],forb:["getted"],m:"We got our luggage very quickly."},
+  {q:"✗ \"My friend meeted me at arrivals.\"",a:["met"],req:["met"],forb:["meeted"],m:"My friend met me at arrivals."}
+ ]},
+/* 6 UAE — announcements cloze */
+{fl:"🇦🇪",name:"UAE",city:"Dubai · DXB",type:"Gate Announcements",kind:"announce",
+ mission:"📢 Listen up! Complete the airport announcements. Some gaps need an <b>airport word</b>, others the <b>past simple</b>.",
+ lines:[
+  "“Attention passengers: flight EK-204 to London is now ((boarding)) at ((gate)) B12.”",
+  "“This is the final ((call)) for passenger Silva. Your plane is ready for ((departure)).”",
+  "“We are sorry: flight QF-08 has been ((delayed|cancelled)) due to bad weather.”",
+  "“Passenger Tanaka: you ((leave|left)) your phone at security. Please come back to collect it.”",
+  "“Flight TK-77 from Istanbul ((land|landed)) ten minutes ago. Please proceed to baggage ((claim)).”"
+ ]},
+/* 7 SOUTH AFRICA — transformation */
+{fl:"🇿🇦",name:"South Africa",city:"Cape Town · CPT",type:"Time Machine",kind:"items",
+ mission:"Your travel diary is in the present — but the trip already happened! <b>Rewrite each sentence in the past simple.</b>",
+ items:[
+  {q:"I wake up at 5 AM and drive to the airport.",req:["woke","drove"],m:"I woke up at 5 AM and drove to the airport."},
+  {q:"I stand in line and the agent checks my bags.",req:["stood","checked"],m:"I stood in line and the agent checked my bags."},
+  {q:"The plane takes off and flies over the mountains.",req:["took","flew"],m:"The plane took off and flew over the mountains."},
+  {q:"I see Table Mountain and feel very happy.",req:["saw","felt"],m:"I saw Table Mountain and felt very happy."},
+  {q:"We land safely and I send a message to my family.",req:["landed","sent"],m:"We landed safely and I sent a message to my family."}
+ ]},
+/* 8 ARGENTINA — lost luggage open answers */
+{fl:"🇦🇷",name:"Argentina",city:"Buenos Aires · EZE",type:"Lost Luggage Office",kind:"items",
+ mission:"Disaster — your suitcase didn't arrive! Answer the lost-luggage officer <b>in full sentences</b>, using the verb in brackets in the past.",
+ items:[
+  {q:"“Where did you fly from today?”",tag:"fly · from Cape Town",req:["flew"],m:"I flew from Cape Town."},
+  {q:"“When did you last see your suitcase?”",tag:"see · at check-in",req:["saw"],m:"I last saw it at check-in."},
+  {q:"“What did you put inside the suitcase?”",tag:"put · clothes and gifts",req:["put"],m:"I put clothes and gifts inside."},
+  {q:"“Did you write your name on the bag tag?”",tag:"write · yes",req:["wrote"],m:"Yes, I wrote my name on the tag."},
+  {q:"“How much did you pay for the suitcase?”",tag:"pay · about $80",req:["paid"],m:"I paid about $80 for it."}
+ ]},
+/* 9 AUSTRALIA — rapid mixed round */
+{fl:"🇦🇺",name:"Australia",city:"Sydney · SYD",type:"Rapid Boarding Round",kind:"items",
+ mission:"Last call before the final flight! A <b>lightning round</b>: short answers only — vocabulary AND past forms, mixed.",
+ items:[
+  {q:"Past of <b>forget</b> (“I ____ my charger on the plane!”)",a:["forgot"],m:"forgot"},
+  {q:"The screen that shows all departures and arrivals is the departure ____.",a:["board","boards"],m:"departure board"},
+  {q:"Past of <b>lose</b> (“She ____ her boarding pass.”)",a:["lost"],m:"lost"},
+  {q:"When a plane arrives, it ____ (past of <b>land</b> — careful, regular!).",a:["landed"],m:"landed"},
+  {q:"The official check of your bags and body before the gates: ____.",a:["security","security check","security control"],m:"security (check)"},
+  {q:"Past of <b>catch</b> (“We just ____ our connecting flight!”)",a:["caught"],m:"caught"},
+  {q:"A flight with a stop and a plane change is a ____ flight.",a:["connecting","connection","connecting flight"],m:"connecting flight"},
+  {q:"Past of <b>choose</b> (“He ____ an aisle seat.”)",a:["chose"],m:"chose"}
+ ]},
+/* 10 ITALY — final writing */
+{fl:"🇮🇹",name:"Italy",city:"Rome · FCO",type:"Final Writing — Travel Diary",kind:"writing",
+ mission:"FINAL STOP! Rome unlocks only with your <b>travel diary</b>: tell the story of your world tour (~130–160 words) in the past simple."}
+];
+
+const IRREG=["was","were","had","did","went","came","saw","said","made","took","got","gave","found","told","became","left","felt","brought","began","kept","held","wrote","stood","heard","met","ran","sat","spoke","led","lost","fell","sent","built","broke","spent","drove","bought","wore","chose","threw","caught","flew","fought","won","hid","woke","shot","knew","thought","sold","ate","slept","drew","paid","put","forgot","understood","rode","swam"];
+const AIRPORT=["passport","boarding pass","gate","check-in","check in","luggage","suitcase","carry-on","hand luggage","security","customs","duty-free","duty free","layover","stopover","baggage claim","carousel","flight attendant","departure","arrival","delayed","take off","took off","landed","boarding","window seat","aisle","connecting","terminal","announcement","immigration","passport control"];
+
+/* ================= STATE ================= */
+const S={cur:0,done:new Set()};
+
+/* ================= HELPERS ================= */
+function norm(s){return (s||"").toLowerCase().replace(/[’`]/g,"'").replace(/\s+/g," ").replace(/[.,;:!?"]+$/,"").trim();}
+function hasW(t,w){return new RegExp("\\b"+w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"\\b").test(t);}
+function matchAny(t,a){return a.some(x=>{const n=norm(x);return n.includes(" ")?t.includes(n):(t===n||hasW(t,n));});}
+
+/* ================= RENDER: route + passport ================= */
+function renderRoute(){
+  document.getElementById("stops").innerHTML=STOPS.map((st,i)=>{
+    const done=S.done.has(i),cur=i===S.cur&&!done,locked=i>S.cur;
+    return `<div class="stop ${done?'done':''} ${cur?'cur':''} ${locked?'locked':''}" onclick="goTo(${i})">
+      <div class="dotwrap"><span class="plane-ico">✈</span><div class="dot">${done?'✓':st.fl}</div><div class="leg"></div></div>
+      <div class="nm">${st.name}</div>${locked?'<div class="lk">🔒</div>':''}</div>`;
+  }).join("");
+}
+function renderPassport(){
+  document.getElementById("stamps").innerHTML=STOPS.map((st,i)=>
+    `<div class="stampbox">${S.done.has(i)?`<div class="stamp"><span class="fl">${st.fl}</span>${st.name.toUpperCase()}<br>ADMITTED</div>`:''}</div>`).join("");
+}
+function goTo(i){if(i<=S.cur||S.done.has(i)){S.cur=i;renderAll();}}
+
+/* ================= RENDER: main card ================= */
+let GIDX=0;
+function clozeText(t,cls){
+  return t.replace(/\(\((.*?)\)\)/g,(m,inner)=>{
+    const parts=inner.split("|");
+    const hint=parts.length>1?parts[0]:"";
+    const acc=parts.length>1?parts.slice(1).join(","):parts[0];
+    const w=Math.max(7,(parts[parts.length-1]||"").length+4);
+    const id="g"+(GIDX++);
+    return `<input class="gap ${cls||''}" id="${id}" data-acc="${acc}" placeholder="${hint||'…'}" style="width:${w}ch" autocomplete="off" spellcheck="false">`;
+  });
+}
+function renderMain(){
+  GIDX=0;
+  const st=STOPS[S.cur],m=document.getElementById("main");
+  let body="";
+  if(st.kind==="items"){
+    body=st.items.map((it,i)=>`<div class="item">
+      <div class="q"><span class="qn">${i+1}.</span>${it.scr?`<span class="scramble">${it.scr}</span>`:it.q}${it.tag?`<span class="tag">${it.tag}</span>`:''}</div>
+      <input type="text" id="in${i}" placeholder="${st.kind==='items'&&it.scr?'Write the sentence in order…':'Type your answer…'}" autocomplete="off" spellcheck="false">
+      <div class="fb" id="fb${i}"></div></div>`).join("");
+    body+=actions();
+  }else if(st.kind==="unscramble"){
+    body=st.items.map((it,i)=>`<div class="item">
+      <div class="q"><span class="qn">${i+1}.</span></div><div class="scramble">${it.scr}</div>
+      <input type="text" id="in${i}" placeholder="Write the sentence in the correct order…" autocomplete="off" spellcheck="false">
+      <div class="fb" id="fb${i}"></div></div>`).join("");
+    body+=actions();
+  }else if(st.kind==="dialogue"){
+    body=`<div class="dlg">`+st.lines.map(l=>`<div class="ln ${l.you?'you':''}"><span class="who">${l.who}</span><span class="say">${l.you?clozeText(l.t):l.t}</span></div>`).join("")+`</div>`+actions(true);
+  }else if(st.kind==="announce"){
+    body=st.lines.map(l=>`<div class="announce">📢 ${clozeText(l)}</div>`).join("")+actions(true);
+  }else if(st.kind==="writing"){
+    body=`
+    <textarea id="diary" placeholder="Dear diary, what a trip! First, I flew from São Paulo to New York. At passport control, I showed my passport and the officer asked me..."></textarea>
+    <div class="meters">
+      <div class="meter" id="m-w"><div class="big" id="o-w">0</div><div class="lab">words · aim 130–160</div></div>
+      <div class="meter" id="m-v"><div class="big" id="o-v">0</div><div class="lab">irregular past verbs · aim 10+</div></div>
+      <div class="meter" id="m-a"><div class="big" id="o-a">0</div><div class="lab">airport words · aim 5+</div></div>
+    </div>
+    <ul class="checklist">
+      <li id="c-w"><span class="box">✓</span>130–170 words</li>
+      <li id="c-v"><span class="box">✓</span>At least 10 irregular past verbs</li>
+      <li id="c-a"><span class="box">✓</span>At least 5 airport words (gate, luggage, passport…)</li>
+      <li id="c-c"><span class="box">✓</span>Mentions at least 3 countries of the tour</li>
+    </ul>
+    <div class="actions">
+      <button class="btn board" onclick="checkWriting()">🛬 Land in Rome!</button>
+      <button class="btn ghost" onclick="document.getElementById('model').classList.toggle('show')">Model diary</button>
+    </div>
+    <div class="msg" id="msg"></div>
+    <div class="modelbox" id="model"><h4>Model travel diary (~150 words)</h4><p>What an adventure! My world tour began in São Paulo, where I checked in and got my boarding pass. I flew to New York first; at passport control I showed my passport and the officer said, "Welcome!" In London I went through security and bought souvenirs at the duty-free shop. In Paris I ran to the gate because I was late, but I caught the flight! In Tokyo a flight attendant gave me green tea, and I ate sushi at the airport. In Dubai my flight was delayed, so I slept in the terminal. In Cape Town I saw beautiful mountains from the window seat. In Buenos Aires the airline lost my luggage — I felt terrible, but they found it the next day. Finally, I landed in Rome, took my suitcase from the baggage claim, and felt like the happiest traveller in the world.</p></div>`;
+  }
+  m.innerHTML=`<div class="card">
+    <div class="country-head"><span class="fl">${st.fl}</span>
+      <div><h2>Stop ${S.cur+1}: ${st.name}</h2><span class="ty">${st.type}</span></div>
+      <div class="gate">${st.city}<br>GATE ${String.fromCharCode(65+S.cur)}${S.cur+2}</div></div>
+    <div class="mission">${st.mission}</div>${body}</div>`;
+  if(st.kind==="writing"){const ta=document.getElementById("diary");ta.addEventListener("input",analyzeWriting);analyzeWriting();}
+}
+function actions(clozeMode){
+  return `<div class="actions">
+    <button class="btn" onclick="${clozeMode?'checkCloze()':'checkItems()'}">Check</button>
+    <button class="btn ghost" onclick="reveal()">Show answers</button>
+    <span class="score" id="score"></span></div><div class="msg" id="msg"></div>`;
+}
+
+/* ================= CHECKERS ================= */
+function checkItems(){
+  const st=STOPS[S.cur];let c=0;
+  st.items.forEach((it,i)=>{
+    const inp=document.getElementById("in"+i),fb=document.getElementById("fb"+i),t=norm(inp.value);
+    if(!t){inp.classList.remove("ok","no");fb.className="fb";return;}
+    let ok=true;
+    if(it.a)ok=matchAny(t,it.a);
+    if(it.req)ok=(it.a?ok:true)&&it.req.every(r=>hasW(t,r));
+    if(it.a&&it.req)ok=matchAny(t,it.a)||it.req.every(r=>hasW(t,r));
+    if(it.forb)ok=ok&&!it.forb.some(f=>hasW(t,f));
+    inp.classList.remove("ok","no");inp.classList.add(ok?"ok":"no");
+    fb.className="fb "+(ok?"ok":"no");
+    fb.innerHTML=ok?`✓ Correct!<span class="m"><b>Model:</b> ${it.m}</span>`:"Not quite — check the verb form or the airport word.";
+    if(ok)c++;
+  });
+  finishRound(c,st.items.length);
+}
+function checkCloze(){
+  const gaps=document.querySelectorAll(".gap");let c=0;
+  gaps.forEach(g=>{
+    const acc=g.dataset.acc.split(",").map(x=>norm(x));
+    const ok=acc.includes(norm(g.value));
+    g.classList.remove("ok","no");
+    if(norm(g.value))g.classList.add(ok?"ok":"no");
+    if(ok)c++;
+  });
+  finishRound(c,gaps.length);
+}
+function reveal(){
+  const st=STOPS[S.cur];
+  if(st.kind==="items"||st.kind==="unscramble"){
+    st.items.forEach((it,i)=>{const fb=document.getElementById("fb"+i);fb.className="fb ok";fb.innerHTML=`<span class="m"><b>Model:</b> ${it.m}</span>`;});
+  }else{
+    document.querySelectorAll(".gap").forEach(g=>{g.value=g.dataset.acc.split(",")[0];g.classList.remove("no");g.classList.add("ok");});
+  }
+}
+function finishRound(c,total){
+  const sc=document.getElementById("score"),msg=document.getElementById("msg");
+  if(sc){sc.classList.add("show");sc.textContent=c+" / "+total;sc.style.color=c===total?"var(--ok)":"var(--warn)";}
+  if(c===total){
+    S.done.add(S.cur);renderRoute();renderPassport();update();
+    msg.className="msg ok";
+    msg.innerHTML= S.cur<STOPS.length-1
+      ? `🎉 <b>${STOPS[S.cur].name} stamped in your passport!</b> Your next flight is ready. <button class="btn board" style="margin-left:8px;" onclick="board()">🛫 Board flight to ${STOPS[S.cur+1].name} →</button>`
+      : "🎉 Final stop complete!";
+  }else{
+    msg.className="msg no";msg.innerHTML="Some answers need another look — fix the ones in orange and check again.";
+  }
+}
+function board(){
+  if(S.cur<STOPS.length-1){S.cur++;renderAll();
+    document.getElementById("main").scrollIntoView({behavior:"smooth",block:"start"});}
+}
+
+/* ================= WRITING ================= */
+function analyzeWriting(){
+  const raw=document.getElementById("diary").value,t=norm(raw);
+  const words=raw.trim()?raw.trim().split(/\s+/).length:0;
+  let v=new Set();IRREG.forEach(x=>{if(hasW(t,x))v.add(x);});
+  let a=new Set();AIRPORT.forEach(x=>{if(x.includes(" ")?t.includes(x):hasW(t,x))a.add(x);});
+  const countries=["brazil","são paulo","sao paulo","new york","usa","london","uk","paris","france","tokyo","japan","dubai","cape town","south africa","buenos aires","argentina","sydney","australia","rome","italy"];
+  let cn=0;countries.forEach(x=>{if(t.includes(x))cn++;});
+  document.getElementById("o-w").textContent=words;
+  document.getElementById("o-v").textContent=v.size;
+  document.getElementById("o-a").textContent=a.size;
+  const wOk=words>=130&&words<=180,vOk=v.size>=10,aOk=a.size>=5,cOk=cn>=3;
+  document.getElementById("m-w").classList.toggle("hit",wOk);
+  document.getElementById("m-v").classList.toggle("hit",vOk);
+  document.getElementById("m-a").classList.toggle("hit",aOk);
+  setck("c-w",wOk);setck("c-v",vOk);setck("c-a",aOk);setck("c-c",cOk);
+  return {wOk,vOk,aOk,cOk,words,v:v.size,a:a.size};
+}
+function setck(id,on){const e=document.getElementById(id);if(e)e.classList.toggle("on",on);}
+function checkWriting(){
+  const r=analyzeWriting(),msg=document.getElementById("msg");
+  const all=r.wOk&&r.vOk&&r.aOk&&r.cOk;
+  if(all){
+    S.done.add(S.cur);renderRoute();renderPassport();update();
+    msg.className="msg ok";msg.innerHTML="🏆 BENVENUTO A ROMA! Your diary is fantastic — "+r.words+" words, "+r.v+" irregular verbs and "+r.a+" airport words.";
+    document.getElementById("victory").style.display="block";
+    document.getElementById("vtxt").textContent="10 countries, dozens of irregular verbs, and full airport survival skills. You are officially a world traveller!";
+    document.getElementById("victory").scrollIntoView({behavior:"smooth"});
+  }else{
+    msg.className="msg no";let mm=[];
+    if(!r.wOk)mm.push("aim for 130–160 words");
+    if(!r.vOk)mm.push("use at least 10 irregular past verbs");
+    if(!r.aOk)mm.push("use at least 5 airport words");
+    if(!r.cOk)mm.push("mention at least 3 countries from the tour");
+    msg.innerHTML="Almost boarding — "+mm.join("; ")+".";
+  }
+}
+
+/* ================= TRACKER ================= */
+function update(){
+  document.getElementById("tStops").textContent=S.done.size;
+  document.getElementById("tNow").textContent=S.done.size===10?"Tour complete! 🎉":"Now boarding: "+STOPS[S.cur].name;
+  document.getElementById("bar").style.width=Math.round(S.done.size/10*100)+"%";
+}
+function renderAll(){renderRoute();renderPassport();renderMain();update();}
+function resetAll(){S.cur=0;S.done=new Set();document.getElementById("victory").style.display="none";renderAll();window.scrollTo({top:0,behavior:"smooth"});}
+document.addEventListener("keydown",e=>{
+  if(e.key==="Enter"&&(e.target.matches('.item input')||e.target.matches('.gap'))){
+    const st=STOPS[S.cur];
+    if(st.kind==="dialogue"||st.kind==="announce")checkCloze();else if(st.kind!=="writing")checkItems();
+    e.preventDefault();}
+});
+renderAll();
+</script>
+</body>
+</html>
