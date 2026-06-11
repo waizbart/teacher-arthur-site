@@ -36,7 +36,11 @@ func homeHandler(w http.ResponseWriter, _ *http.Request) {
 	filesList := listFiles()
 
 	for _, fileName := range filesList {
-		fmt.Fprintf(&finalFileListHTML, "<li><a href=\"/%s\"><span class=\"file-id\">%s</span></a></li>", fileName, fileName)
+		noHtml := strings.ReplaceAll(fileName, ".html", "")
+		noDash := strings.ReplaceAll(noHtml, "-", " ")
+		noUnderscore := strings.ReplaceAll(noDash, "_", " ")
+		title := strings.Title(noUnderscore)
+		fmt.Fprintf(&finalFileListHTML, "<li><a href=\"/%s\"><span class=\"file-id\">%s</span></a></li>", fileName, title)
 	}
 
 	fileContentWithFilesList := strings.Replace(fileContent, "{% files_list %}", finalFileListHTML.String(), 1)

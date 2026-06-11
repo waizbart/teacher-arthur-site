@@ -3,92 +3,311 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>HTML Server — Files</title>
+	<title>Teacher Arthur — English Classes</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 	<style>
 		* { box-sizing: border-box; margin: 0; padding: 0; }
 
-		body {
-			font-family: system-ui, sans-serif;
-			background: #f4f4f5;
-			color: #18181b;
-			line-height: 1.5;
-			padding: 2rem 1rem;
+		:root {
+			--ink: #0f1729;
+			--muted: #8ba3c7;
+			--gold: #ffb703;
+			--sky: #19a7ce;
+			--coral: #ff5d73;
+			--card: rgba(255, 255, 255, 0.07);
+			--card-border: rgba(255, 255, 255, 0.14);
+			--glow: rgba(255, 183, 3, 0.35);
 		}
 
-		main {
-			max-width: 640px;
+		body {
+			font-family: 'Nunito', system-ui, sans-serif;
+			background: #071a35;
+			color: #eef4fc;
+			line-height: 1.55;
+			min-height: 100vh;
+			padding: 2rem 1.25rem 3.5rem;
+			-webkit-font-smoothing: antialiased;
+			overflow-x: hidden;
+		}
+
+		body::before,
+		body::after {
+			content: "";
+			position: fixed;
+			border-radius: 50%;
+			filter: blur(80px);
+			pointer-events: none;
+			z-index: 0;
+		}
+
+		body::before {
+			width: 420px;
+			height: 420px;
+			top: -120px;
+			right: -80px;
+			background: radial-gradient(circle, rgba(25, 167, 206, 0.45), transparent 70%);
+			animation: drift 14s ease-in-out infinite alternate;
+		}
+
+		body::after {
+			width: 360px;
+			height: 360px;
+			bottom: -100px;
+			left: -60px;
+			background: radial-gradient(circle, rgba(255, 93, 115, 0.35), transparent 70%);
+			animation: drift 18s ease-in-out infinite alternate-reverse;
+		}
+
+		@keyframes drift {
+			to { transform: translate(30px, 24px) scale(1.08); }
+		}
+
+		.page {
+			position: relative;
+			z-index: 1;
+			max-width: 720px;
 			margin: 0 auto;
-			background: #fff;
-			border: 1px solid #e4e4e7;
-			border-radius: 8px;
-			padding: 2rem;
+		}
+
+		header {
+			text-align: center;
+			margin-bottom: 2.25rem;
+			padding-top: 0.5rem;
+		}
+
+		.badge {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.4rem;
+			font-size: 0.72rem;
+			font-weight: 800;
+			letter-spacing: 0.14em;
+			text-transform: uppercase;
+			color: var(--ink);
+			background: var(--gold);
+			border-radius: 999px;
+			padding: 0.35rem 0.9rem;
+			margin-bottom: 1rem;
+			box-shadow: 0 4px 0 rgba(0, 0, 0, 0.18);
 		}
 
 		h1 {
-			font-size: 1.5rem;
-			margin-bottom: 0.25rem;
+			font-family: 'Baloo 2', cursive;
+			font-size: clamp(2.4rem, 8vw, 3.6rem);
+			font-weight: 800;
+			line-height: 1.02;
+			color: #fff;
+			text-shadow: 0 4px 0 rgba(0, 0, 0, 0.22);
+			margin-bottom: 0.65rem;
 		}
 
-		p {
-			color: #71717a;
-			margin-bottom: 1.5rem;
+		.lead {
+			color: var(--muted);
+			font-size: 1.08rem;
+			max-width: 34ch;
+			margin: 0 auto 1.25rem;
+		}
+
+		.ticker {
+			display: inline-block;
+			font-size: 0.88rem;
+			font-weight: 700;
+			color: #cfe3f8;
+			background: rgba(255, 255, 255, 0.06);
+			border: 1px solid var(--card-border);
+			border-radius: 999px;
+			padding: 0.45rem 1.1rem;
+			min-height: 2.1rem;
+			transition: opacity 0.35s ease;
+		}
+
+		.ticker.fade { opacity: 0; }
+
+		main {
+			background: linear-gradient(160deg, rgba(255,255,255,0.1), rgba(255,255,255,0.04));
+			border: 1px solid var(--card-border);
+			border-radius: 22px;
+			padding: 1.35rem;
+			backdrop-filter: blur(12px);
+			box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+		}
+
+		.panel-head {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 1rem;
+			margin-bottom: 1rem;
+			padding: 0 0.15rem;
+		}
+
+		.panel-head h2 {
+			font-family: 'Baloo 2', cursive;
+			font-size: 1.15rem;
+			font-weight: 700;
+			color: var(--gold);
+		}
+
+		.panel-head span {
+			font-size: 0.78rem;
+			font-weight: 800;
+			color: var(--muted);
+			letter-spacing: 0.06em;
+			text-transform: uppercase;
 		}
 
 		ul {
 			list-style: none;
+			display: flex;
+			flex-direction: column;
+			gap: 0.85rem;
+			counter-reset: lesson;
 		}
 
-		li + li {
-			margin-top: 0.5rem;
+		li {
+			counter-increment: lesson;
 		}
 
-		a {
-			display: block;
-			padding: 0.75rem 1rem;
-			border: 1px solid #e4e4e7;
-			border-radius: 6px;
-			color: #18181b;
+		li a {
+			display: grid;
+			grid-template-columns: auto 1fr auto;
+			align-items: center;
+			gap: 1rem;
+			padding: 1.05rem 1.15rem;
+			border: 1px solid var(--card-border);
+			border-radius: 16px;
+			color: #fff;
 			text-decoration: none;
-			transition: border-color 0.15s, background 0.15s;
+			background: var(--card);
+			transition: border-color 0.2s, box-shadow 0.25s, transform 0.25s, background 0.25s;
 		}
 
-		a:hover {
-			border-color: #a1a1aa;
-			background: #fafafa;
+		li a::before {
+			content: counter(lesson, decimal-leading-zero);
+			font-family: 'Baloo 2', cursive;
+			font-size: 1.1rem;
+			font-weight: 800;
+			color: var(--ink);
+			background: var(--gold);
+			width: 2.5rem;
+			height: 2.5rem;
+			border-radius: 12px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+			flex: none;
+		}
+
+		li a::after {
+			content: "→";
+			flex: none;
+			width: 2.25rem;
+			height: 2.25rem;
+			border-radius: 10px;
+			background: rgba(255, 255, 255, 0.08);
+			color: var(--gold);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 1.15rem;
+			transition: background 0.2s, color 0.2s, transform 0.2s;
+		}
+
+		li a:hover {
+			border-color: rgba(255, 183, 3, 0.45);
+			background: rgba(255, 255, 255, 0.1);
+			box-shadow: 0 10px 30px var(--glow);
+			transform: translateY(-2px);
+		}
+
+		li a:hover::after {
+			background: var(--gold);
+			color: var(--ink);
+			transform: translateX(3px);
+		}
+
+		li a:focus-visible {
+			outline: 2px solid var(--gold);
+			outline-offset: 3px;
 		}
 
 		.file-id {
-			font-weight: 600;
+			font-weight: 800;
+			font-size: 1rem;
+			line-height: 1.35;
+			word-break: break-word;
 		}
 
-		.file-path {
+		.file-id::before {
+			content: "📖 ";
+		}
+
+		li a[href*="airport"] .file-id::before {
+			content: "✈️ ";
+		}
+
+		li a[href*="modals"] .file-id::before,
+		li a[href*="computing"] .file-id::before {
+			content: "💻 ";
+		}
+
+		li a[href*="irregular"] .file-id::after {
 			display: block;
-			font-size: 0.8rem;
-			color: #71717a;
+			font-size: 0.78rem;
+			font-weight: 600;
+			color: var(--muted);
 			margin-top: 0.15rem;
-			font-family: monospace;
+		}
+
+		li a[href*="modals"] .file-id::after {
+			display: block;
+			font-size: 0.78rem;
+			font-weight: 600;
+			color: var(--muted);
+			margin-top: 0.15rem;
 		}
 
 		footer {
-			max-width: 640px;
-			margin: 1rem auto 0;
+			margin-top: 1.75rem;
 			text-align: center;
-			font-size: 0.8rem;
-			color: #a1a1aa;
+			font-size: 0.82rem;
+			font-weight: 600;
+			color: rgba(139, 163, 199, 0.75);
+		}
+
+		@media (max-width: 520px) {
+			li a {
+				grid-template-columns: auto 1fr;
+			}
+
+			li a::after {
+				display: none;
+			}
 		}
 	</style>
 </head>
 <body>
-	<main>
-		<h1>File Directory</h1>
-		<p>Click a file to open it.</p>
+	<div class="page">
+		<header>
+			<p class="badge">📚 Teacher Arthur</p>
+			<h1>English Classes</h1>
+			<p class="lead">Lessons by Teacher Arthur.</p>
+		</header>
 
-		<ul>
-            {% files_list %}
-			
-		</ul>
-	</main>
+		<main>
+			<div class="panel-head">
+				<h2>Arthur's lineup</h2>
+				<span>tap to open</span>
+			</div>
+			<ul>
+				{% files_list %}
+			</ul>
+		</main>
 
-	<footer>html-server</footer>
+		<footer>Teacher Arthur</footer>
+	</div>
 </body>
 </html>
